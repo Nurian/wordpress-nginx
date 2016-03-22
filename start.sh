@@ -17,7 +17,6 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   #  usermod -p $(openssl passwd -1 $SSH_PASSWORD) wordpress
   #Not running the above because its taken care of in Dockerfile when adding the container user used for SSH
 
-
   sed -e "s/database_name_here/$WORDPRESS_DB/
   s/username_here/$WORDPRESS_DB/
   s/password_here/$WORDPRESS_PASSWORD/
@@ -59,4 +58,4 @@ ENDL
 fi
 
 # start all the services
-/usr/local/bin/supervisord -n -c /etc/supervisord.conf
+/usr/local/bin/supervisord -n -c /etc/supervisordroot/.conf
