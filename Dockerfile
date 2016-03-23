@@ -1,5 +1,5 @@
 FROM ubuntu:14.04
-MAINTAINER Kevin Kevin Nordloh
+MAINTAINER Kevin Nordloh <mail@legendary-server.de>
 
 # Keep upstart from complaining
 RUN dpkg-divert --local --rename --add /sbin/initctl
@@ -13,15 +13,10 @@ RUN apt-get update
 RUN apt-get -y upgrade
 
 # Basic Requirements
-RUN apt-get -y install mysql-server mysql-client \
-nginx php5-fpm php5-mysql php-apc pwgen python-setuptools \
-curl git unzip openssh-server openssl
+RUN apt-get -y install mysql-server mysql-client nginx php5-fpm php5-mysql php-apc pwgen python-setuptools curl git unzip openssh-server openssl
 
 # Wordpress Requirements
-RUN apt-get -y install php5-curl php5-gd php5-intl php-pear \
-php5-imagick php5-imap php5-mcrypt php5-memcache php5-ming \
-php5-ps php5-pspell php5-recode php5-sqlite php5-tidy \
-php5-xmlrpc php5-xsl
+RUN apt-get -y install php5-curl php5-gd php5-intl php-pear php5-imagick php5-imap php5-mcrypt php5-memcache php5-ming php5-ps php5-pspell php5-recode php5-sqlite php5-tidy php5-xmlrpc php5-xsl
 
 # mysql config
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf

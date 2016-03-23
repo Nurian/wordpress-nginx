@@ -29,10 +29,22 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   /'LOGGED_IN_SALT'/s/put your unique phrase here/`pwgen -c -n -1 65`/
   /'NONCE_SALT'/s/put your unique phrase here/`pwgen -c -n -1 65`/" /usr/share/nginx/www/wp-config-sample.php > /usr/share/nginx/www/wp-config.php
 
+  sed -i -e '/WP_DEBUG/a\
+  $_SERVER[HTTPS] = on;' /usr/share/nginx/www/wp-config.php
+
   # Download nginx helper plugin
   curl -O `curl -i -s https://wordpress.org/plugins/nginx-helper/ | egrep -o "https://downloads.wordpress.org/plugin/[^']+"`
   unzip -o nginx-helper.*.zip -d /usr/share/nginx/www/wp-content/plugins
-  chown -R www-data:www-data /usr/share/nginx/www/wp-content/plugins/nginx-helper
+  # Download autoptimize plugin
+  curl -O `curl -i -s https://wordpress.org/plugins/autoptimize/ | egrep -o "https://downloads.wordpress.org/plugin/[^']+"`
+  unzip -o autoptimize.*.zip -d /usr/share/nginx/www/wp-content/plugins
+  # Download wp-super-cache plugin
+  curl -O `curl -i -s https://wordpress.org/plugins/wp-super-cache/ | egrep -o "https://downloads.wordpress.org/plugin/[^']+"`
+  unzip -o wp-super-cache.*.zip -d /usr/share/nginx/www/wp-content/plugins
+  chown -R www-data:www-data /usr/share/nginx/www/wp-content/plugins
+
+  # Delete the .zip files
+  rm autoptimize.*.zip nginx-helper.*.zip wp-super-cache.*.zip
 
   # Activate nginx plugin and set up pretty permalink structure once logged in
   cat << ENDL >> /usr/share/nginx/www/wp-config.php
@@ -40,13 +52,17 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
 if ( count( \$plugins ) === 0 ) {
   require_once(ABSPATH .'/wp-admin/includes/plugin.php');
   \$wp_rewrite->set_permalink_structure( '/%postname%/' );
-  \$pluginsToActivate = array( 'nginx-helper/nginx-helper.php' );
+  \$pluginsToActivate = array( 'nginx-helper/nginx-helper.php', 'autoptimize/autoptimize.php', 'wp-super-cache/wp-cache.php' );
   foreach ( \$pluginsToActivate as \$plugin ) {
     if ( !in_array( \$plugin, \$plugins ) ) {
       activate_plugin( '/usr/share/nginx/www/wp-content/plugins/' . \$plugin );
     }
   }
 }
+
+define( 'WP_AUTO_UPDATE_CORE', true );
+add_filter( 'auto_update_plugin', '__return_true' );
+add_filter( 'auto_update_theme', '__return_true' );
 ENDL
 
   chown www-data:www-data /usr/share/nginx/www/wp-config.php
@@ -54,8 +70,16 @@ ENDL
   mysqladmin -u root password $MYSQL_PASSWORD
   mysql -uroot -p$MYSQL_PASSWORD -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_PASSWORD' WITH GRANT OPTION; FLUSH PRIVILEGES;"
   mysql -uroot -p$MYSQL_PASSWORD -e "CREATE DATABASE wordpress; GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'localhost' IDENTIFIED BY '$WORDPRESS_PASSWORD'; FLUSH PRIVILEGES;"
+
+  # Update Plugin Settings
+  echo "INSERT INTO wp_options (option_name, option_value) VALUES ('autoptimize_js', 'on');" | mysql -uroot -p$MYSQL_PASSWORD wordpress
+  echo "INSERT INTO wp_options (option_name, option_value) VALUES ('autoptimize_css', 'on');" | mysql -uroot -p$MYSQL_PASSWORD wordpress
+  echo "INSERT INTO wp_options (option_name, option_value) VALUES ('autoptimize_css_inline', 'on');" | mysql -uroot -p$MYSQL_PASSWORD wordpress
+  echo "INSERT INTO wp_options (option_name, option_value) VALUES ('autoptimize_css_nogooglefont', 'on');" | mysql -uroot -p$MYSQL_PASSWORD wordpress
+  echo "INSERT INTO wp_options (option_name, option_value) VALUES ('autoptimize_js_forcehead', '');" | mysql -uroot -p$MYSQL_PASSWORD wordpress
+
   killall mysqld
 fi
 
 # start all the services
-/usr/local/bin/supervisord -n -c /etc/supervisordroot/.conf
+/usr/local/bin/supervisord -n -c /etc/supervisord.conf
