@@ -12,6 +12,7 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   echo wordpress password: $WORDPRESS_PASSWORD
   echo $MYSQL_PASSWORD > /mysql-root-pw.txt
   echo $WORDPRESS_PASSWORD > /wordpress-db-pw.txt
+  echo "wordpress:testo2" | chpasswd
 
   #Update linux user password to the new random one
   #  usermod -p $(openssl passwd -1 $SSH_PASSWORD) wordpress
