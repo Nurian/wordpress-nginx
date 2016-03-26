@@ -43,7 +43,7 @@ RUN /usr/bin/easy_install supervisor-stdout
 ADD ./supervisord.conf /etc/supervisord.conf
 
 # Add system user for Wordpress
-RUN useradd -m -d /home/wordpress --disabled-password -G root -s /bin/bash wordpress \
+RUN useradd -m -d /home/wordpress -G root -s /bin/bash wordpress \
     && usermod -a -G www-data wordpress \
     && ln -s /usr/share/nginx/www /home/wordpress/www
 

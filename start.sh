@@ -7,15 +7,17 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   WORDPRESS_DB="wordpress"
   MYSQL_PASSWORD=`pwgen -c -n -1 12`
   WORDPRESS_PASSWORD=`pwgen -c -n -1 12`
+  ROOT_PASSWORD=`pwgen -c -n -1 12`
   #This is so the passwords show up in logs.
   echo mysql root password: $MYSQL_PASSWORD
   echo wordpress password: $WORDPRESS_PASSWORD
   echo $MYSQL_PASSWORD > /mysql-root-pw.txt
   echo $WORDPRESS_PASSWORD > /wordpress-db-pw.txt
-  echo "wordpress:testo2" | chpasswd
+  echo "wordpress:$SSH_PASSWORD" | chpasswd
+  echo "root:$ROOT_PASSWORD" | chpasswd
 
   #Update linux user password to the new random one
-  #  usermod -p $(openssl passwd -1 $SSH_PASSWORD) wordpress
+  #usermod -p $(openssl passwd -1 testo2) wordpress
   #Not running the above because its taken care of in Dockerfile when adding the container user used for SSH
 
   sed -e "s/database_name_here/$WORDPRESS_DB/
@@ -30,6 +32,7 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   /'LOGGED_IN_SALT'/s/put your unique phrase here/`pwgen -c -n -1 65`/
   /'NONCE_SALT'/s/put your unique phrase here/`pwgen -c -n -1 65`/" /usr/share/nginx/www/wp-config-sample.php > /usr/share/nginx/www/wp-config.php
 
+  # Add https proxy support for wordpress
   sed -i -e '/WP_DEBUG/a\
   $_SERVER[HTTPS] = on;' /usr/share/nginx/www/wp-config.php
 
@@ -47,7 +50,8 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
   # Delete the .zip files
   rm autoptimize.*.zip nginx-helper.*.zip wp-super-cache.*.zip
 
-  # Activate nginx plugin and set up pretty permalink structure once logged in
+  # Activate wordpress plugins and set up pretty permalink structure once logged in
+  # Set automatic updates for wordpress core, plugins and themes
   cat << ENDL >> /usr/share/nginx/www/wp-config.php
 \$plugins = get_option( 'active_plugins' );
 if ( count( \$plugins ) === 0 ) {
