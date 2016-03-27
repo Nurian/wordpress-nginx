@@ -1,0 +1,17 @@
+wordpress_nginx:
+
+  ports:
+    - "30220:22"
+    - "30800:80"
+
+  environment:
+    VIRTUAL_HOST: ${url}
+    LETSENCRYPT_HOST: ${url}
+    LETSENCRYPT_EMAIL: ${email}
+
+  labels:
+    io.rancher.container.pull_image: always
+
+  tty: true
+  image: legendary/wordpress-nginx
+  stdin_open: true
