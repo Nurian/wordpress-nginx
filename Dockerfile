@@ -53,8 +53,8 @@ RUN cd /usr/share/nginx/ \
     && tar xvf latest.tar.gz \
     && rm latest.tar.gz
 
-RUN mv /usr/share/nginx/html/5* /usr/share/nginx/wordpress \
-    && rm -rf /usr/share/nginx/www
+# RUN mv /usr/share/nginx/html/5* /usr/share/nginx/wordpress \
+#    && rm -rf /usr/share/nginx/www
 
 RUN mv /usr/share/nginx/wordpress /usr/share/nginx/www \
     && chown -R www-data:www-data /usr/share/nginx/www \
