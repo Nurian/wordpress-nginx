@@ -18,6 +18,9 @@ RUN apt-get -y install mysql-server mysql-client nginx php7.0 php7.0-fpm php7.0-
 # Wordpress Requirements
 RUN apt-get -y install php7.0-curl php7.0-gd php7.0-intl php-pear php-imagick php7.0-imap php7.0-mcrypt php-memcache php7.0-pspell php7.0-recode php7.0-sqlite3 php7.0-tidy php7.0-xmlrpc php7.0-xsl
 
+# clean up unneeded packages
+RUN apt-get --purge autoremove -y
+
 # mysql config
 RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 
