@@ -15,7 +15,7 @@ RUN apt-get -y upgrade
 
 # Basic Requirements
 RUN apt-get -y install pwgen python-setuptools curl git nano sudo unzip openssh-server openssl
-RUN apt-get -y install mysql-server mysql-client nginx php-fpm php-mysql
+RUN apt-get -y install mysql-client nginx php-fpm php-mysql
 
 # Wordpress Requirements
 RUN apt-get -y install php-xml php-mbstring php-bcmath php-zip php-pdo-mysql php-curl php-gd php-intl php-pear 
@@ -25,7 +25,7 @@ RUN apt-get -y install php-imagick php-imap php-mcrypt php-memcache php-apcu php
 RUN apt-get --purge autoremove -y
 
 # mysql config
-RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/explicit_defaults_for_timestamp = true\nbind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
+#RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/explicit_defaults_for_timestamp = true\nbind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
 
 # nginx config
 RUN sed -i -e"s/user\s*www-data;/user wordpress www-data;/" /etc/nginx/nginx.conf
