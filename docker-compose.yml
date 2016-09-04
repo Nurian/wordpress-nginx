@@ -1,17 +1,15 @@
-wordpress_nginx:
-
-  ports:
-    - "30220:22"
-    - "30800:80"
-
+wordpress_db:
+  image: mariadb
   environment:
-    VIRTUAL_HOST: ${url}
-    LETSENCRYPT_HOST: ${url}
-    LETSENCRYPT_EMAIL: ${email}
+    MYSQL_ROOT_PASSWORD: testo12345
 
-  labels:
-    io.rancher.container.pull_image: always
-
-  tty: true
-  image: legendary/wordpress-nginx
-  stdin_open: true
+wordpress:
+  image: legendary/wordpress-nginx:testing2
+  links:
+    - wordpress_db:mysql
+  ports:
+    - 38550:80
+  environment:
+      - VIRTUAL_HOST=test3.node001.legendary-server.de
+      - LETSENCRYPT_HOST=test3.node001.legendary-server.de
+      - LETSENCRYPT_EMAIL=nordloh.kevin@gmail.com
