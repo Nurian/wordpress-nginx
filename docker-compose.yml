@@ -13,5 +13,5 @@ wordpress_nginx:
     io.rancher.container.pull_image: always
 
   tty: true
-  image: legendary/wordpress-nginx
+  image: primehost/wordpress-nginx
   stdin_open: true
