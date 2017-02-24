@@ -44,7 +44,7 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
 	$_SERVER['HTTPS'] = 'on';
 }
 EOPHP
-		chown wordpress:www-data wp-config.php
+		chown www-data:www-data wp-config.php
 	fi
 
 	# see http://stackoverflow.com/a/2705678/433558
@@ -158,7 +158,7 @@ fi
   # Download wp-super-cache plugin
   curl -O `curl -i -s https://wordpress.org/plugins/wp-super-cache/ | egrep -o "https://downloads.wordpress.org/plugin/[^']+"`
   unzip -o wp-super-cache.*.zip -d /usr/share/nginx/www/wp-content/plugins
-  chown -R wordpress:www-data /usr/share/nginx/www/wp-content/plugins
+  chown -R www-data:www-data /usr/share/nginx/www/wp-content/plugins
 
   # Delete the .zip files
   rm autoptimize.*.zip nginx-helper.*.zip wp-super-cache.*.zip
@@ -185,7 +185,7 @@ add_filter( 'auto_update_plugin', '__return_true' );
 add_filter( 'auto_update_theme', '__return_true' );
 ENDL
 
-  chown -R wordpress:www-data /usr/share/nginx/www/
+  chown -R www-data:www-data /usr/share/nginx/www/
 
 # start all the services
 /usr/local/bin/supervisord -n -c /etc/supervisord.conf

@@ -4,7 +4,7 @@ wordpress_db:
     MYSQL_ROOT_PASSWORD: testo12345
 
 wordpress:
-  image: legendary/wordpress-nginx:testing2
+  image: primehost/wordpress-nginx:testing3
   links:
     - wordpress_db:mysql
   ports:
