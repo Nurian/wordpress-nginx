@@ -1,5 +1,4 @@
-#FROM primehost/nginx
-FROM nginx-test-1
+FROM primehost/nginx
 MAINTAINER Kevin Nordloh <mail@legendary-server.de>
 
 # update before install
