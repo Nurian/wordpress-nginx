@@ -1,17 +1,14 @@
-FROM primehost/nginx
+#FROM primehost/nginx
+FROM nginx-test-1
 MAINTAINER Kevin Nordloh <mail@legendary-server.de>
 
 # update before install
 RUN apt-get update
 RUN apt-get -y upgrade
 
-RUN apt-get -y install mysql-server
-
-# mysql config
-RUN sed -i -e"s/^bind-address\s*=\s*127.0.0.1/explicit_defaults_for_timestamp = true\nbind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
-
 # clean up unneeded packages
 RUN apt-get --purge autoremove -y
+RUN rm -r /usr/share/nginx/www
 
 # Install Wordpress
 ADD http://wordpress.org/latest.tar.gz /usr/share/nginx/latest.tar.gz
