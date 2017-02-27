@@ -23,7 +23,7 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
     WORDPRESS_DB_HOST="mysql"
     sed -e "s/database_name_here/$WORDPRESS_DB/
     s/username_here/root/
-    s/password_here/$WORDPRESS_PASSWORD/
+    s/password_here/$SSH_PASSWORD/
     s/localhost/mysql/
     /'AUTH_KEY'/s/put your unique phrase here/`pwgen -c -n -1 65`/
     /'SECURE_AUTH_KEY'/s/put your unique phrase here/`pwgen -c -n -1 65`/
