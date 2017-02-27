@@ -24,7 +24,7 @@ RUN mv /usr/share/nginx/wordpress /usr/share/nginx/www \
     && chmod -R 775 /usr/share/nginx/www
 
 # Wordpress Initialization and Startup Script
-ADD ./start.sh /wordpress-start.sh
+ADD ./wordpress-start.sh /wordpress-start.sh
 RUN chmod 755 /wordpress-start.sh
 
 CMD ["/bin/bash", "/wordpress-start.sh"]
