@@ -1,18 +1,11 @@
 #!/bin/bash
 
 if [ ! -f /wordpress-db-pw.txt ]; then
-    # Here we generate random passwords (thank you pwgen!). The first two are for mysql users, the last batch for random keys in wp-config.php
-    MYSQL_PASSWORD=`pwgen -c -n -1 12`
-    WORDPRESS_PASSWORD=`pwgen -c -n -1 12`
-    #This is so the passwords show up in logs.
-    echo mysql root password: $MYSQL_PASSWORD
-    echo wordpress password: $WORDPRESS_PASSWORD
-    echo $MYSQL_PASSWORD > /mysql-root-pw.txt
-    echo $WORDPRESS_PASSWORD > /wordpress-db-pw.txt
 
+    # Databse Stuff
     mysqladmin -u root password $MYSQL_PASSWORD
-    mysql -uroot -p$MYSQL_PASSWORD -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$MYSQL_PASSWORD' WITH GRANT OPTION; FLUSH PRIVILEGES;"
-    mysql -uroot -p$MYSQL_PASSWORD -e "CREATE DATABASE wordpress; GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'mysql' IDENTIFIED BY '$WORDPRESS_PASSWORD'; FLUSH PRIVILEGES;"
+    mysql -uroot -p$PRIMEHOST_PASSWORD -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '$PRIMEHOST_PASSWORD' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+    mysql -uroot -p$PRIMEHOST_PASSWORD -e "CREATE DATABASE wordpress; GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'mysql' IDENTIFIED BY '$PRIMEHOST_PASSWORD'; FLUSH PRIVILEGES;"
     killall mysqld
 fi
 
