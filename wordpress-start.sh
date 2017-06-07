@@ -10,8 +10,8 @@ echo "$PRIMEHOST_USER:$PRIMEHOST_PASSWORD" | chpasswd
 echo "root:$PRIMEHOST_PASSWORD" | chpasswd
 
 # Insall wordpress
-curl -o latest.tar.gz -fSL "https://wordpress.org/latest.tar.gz"
 cd /usr/share/nginx/ \
+   && curl -o latest.tar.gz -fSL "https://wordpress.org/latest.tar.gz" \
    && tar xvf latest.tar.gz \
    && rm latest.tar.gz
 
