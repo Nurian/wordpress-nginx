@@ -33,13 +33,12 @@ fi
 
 if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
     WORDPRESS_DB="wordpress"
-    WORDPRESS_PASSWORD=`cat /wordpress-db-pw.txt`
     WORDPRESS_DB_USER="root"
     WORDPRESS_DB_HOST="db.${DOMAIN}"
     sed -e "s/database_name_here/$WORDPRESS_DB/
     s/username_here/root/
     s/password_here/$PRIMEHOST_PASSWORD/
-    s/localhost/mysql/
+    s/localhost/$WORDPRESS_DB_HOST/
     /'AUTH_KEY'/s/put your unique phrase here/`pwgen -c -n -1 65`/
     /'SECURE_AUTH_KEY'/s/put your unique phrase here/`pwgen -c -n -1 65`/
     /'LOGGED_IN_KEY'/s/put your unique phrase here/`pwgen -c -n -1 65`/
