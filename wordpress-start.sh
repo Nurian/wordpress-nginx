@@ -9,16 +9,17 @@ useradd -m -d /home/$PRIMEHOST_USER -G root -s /bin/bash $PRIMEHOST_USER \
 echo "$PRIMEHOST_USER:$PRIMEHOST_PASSWORD" | chpasswd
 echo "root:$PRIMEHOST_PASSWORD" | chpasswd
 
-# Insall wordpress
+# Download wordpress
 cd /usr/share/nginx/ \
    && curl -o latest.tar.gz -fSL "https://wordpress.org/latest.tar.gz" \
-   && tar xvf latest.tar.gz \
-   && rm latest.tar.gz \
-   && rm -r /usr/share/nginx/www
+   && tar xvf latest.tar.gz
 
-mv /usr/share/nginx/wordpress /usr/share/nginx/www \
+# Move to correct folder and cleanup
+mv /usr/share/nginx/wordpress/* /usr/share/nginx/www/. \
     && chown -R www-data:www-data /usr/share/nginx/www \
-    && chmod -R 775 /usr/share/nginx/www
+    && chmod -R 775 /usr/share/nginx/www \
+    && rm -r /usr/share/nginx/wordpress \
+    && rm latest.tar.gz
 
 # Databse Setup
 if [ ! -f /wordpress-db-pw.txt ]; then
