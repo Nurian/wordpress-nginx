@@ -34,7 +34,7 @@ fi
 if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
     WORDPRESS_DB="wordpress"
     WORDPRESS_DB_USER="root"
-    WORDPRESS_DB_HOST="db.$DOMAIN"
+    WORDPRESS_DB_HOST="db.$PRIMEHOST_DOMAIN"
     sed -e "s/database_name_here/$WORDPRESS_DB/
     s/username_here/root/
     s/password_here/$PRIMEHOST_PASSWORD/
