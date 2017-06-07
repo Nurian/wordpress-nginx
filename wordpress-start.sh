@@ -9,6 +9,17 @@ useradd -m -d /home/$PRIMEHOST_USER -G root -s /bin/bash $PRIMEHOST_USER \
 echo "$PRIMEHOST_USER:$PRIMEHOST_PASSWORD" | chpasswd
 echo "root:$PRIMEHOST_PASSWORD" | chpasswd
 
+# Insall wordpress
+curl -o latest.tar.gz -fSL "https://wordpress.org/latest.tar.gz"
+cd /usr/share/nginx/ \
+   && tar xvf latest.tar.gz \
+   && rm latest.tar.gz
+
+mv /usr/share/nginx/wordpress /usr/share/nginx/www \
+    && chown -R www-data:www-data /usr/share/nginx/www \
+    && chmod -R 775 /usr/share/nginx/www
+
+# Databse Setup
 if [ ! -f /wordpress-db-pw.txt ]; then
 
     # Databse Stuff
@@ -22,7 +33,7 @@ if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
     WORDPRESS_DB="wordpress"
     WORDPRESS_PASSWORD=`cat /wordpress-db-pw.txt`
     WORDPRESS_DB_USER="root"
-    WORDPRESS_DB_HOST="mysql"
+    WORDPRESS_DB_HOST="db.${DOMAIN}"
     sed -e "s/database_name_here/$WORDPRESS_DB/
     s/username_here/root/
     s/password_here/$PRIMEHOST_PASSWORD/

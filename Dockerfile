@@ -9,16 +9,6 @@ RUN apt-get -y upgrade
 RUN apt-get --purge autoremove -y
 RUN rm -r /usr/share/nginx/www
 
-# Install Wordpress
-ADD http://wordpress.org/latest.tar.gz /usr/share/nginx/latest.tar.gz
-RUN cd /usr/share/nginx/ \
-    && tar xvf latest.tar.gz \
-    && rm latest.tar.gz
-
-RUN mv /usr/share/nginx/wordpress /usr/share/nginx/www \
-    && chown -R www-data:www-data /usr/share/nginx/www \
-    && chmod -R 775 /usr/share/nginx/www
-
 # Wordpress Initialization and Startup Script
 ADD ./wordpress-start.sh /wordpress-start.sh
 RUN chmod 755 /wordpress-start.sh
