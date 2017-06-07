@@ -7,7 +7,6 @@ RUN apt-get -y upgrade
 
 # clean up unneeded packages
 RUN apt-get --purge autoremove -y
-RUN rm -r /usr/share/nginx/www
 
 # Wordpress Initialization and Startup Script
 ADD ./wordpress-start.sh /wordpress-start.sh
