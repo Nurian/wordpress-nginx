@@ -16,7 +16,7 @@ cd /usr/share/nginx/ \
    && tar xvf latest.tar.gz
 # Move to correct folder and cleanup
 mv /usr/share/nginx/wordpress/* /usr/share/nginx/www/. \
-    && chown -R www-data:www-data /usr/share/nginx/www \
+    && chown -R $PRIMEHOST_USER:$PRIMEHOST_USER /usr/share/nginx/www \
     && chmod -R 775 /usr/share/nginx/www \
     && rm -r /usr/share/nginx/wordpress \
     && rm latest.tar.gz
@@ -72,7 +72,7 @@ ENDL
 sed -i -e '/WP_DEBUG/a\
 $_SERVER[HTTPS] = on;' /usr/share/nginx/www/wp-config.php
 
-    chown -R www-data:www-data /usr/share/nginx/www/
+    chown -R $PRIMEHOST_USER:$PRIMEHOST_USER /usr/share/nginx/www/
     dos2unix /usr/share/nginx/www/wp-config.php
 
 fi
