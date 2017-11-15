@@ -9,7 +9,7 @@ RUN apt-get -y upgrade
 RUN apt-get --purge autoremove -y
 
 # Wordpress Initialization and Startup Script
-ADD ./wordpress-start.sh /wordpress-start.sh
-RUN chmod 755 /wordpress-start.sh
+ADD ./wordpress-start.sh /root/container-scripts/prime-host/wordpress-start.sh
+RUN chmod 755 /root/container-scripts/prime-host/wordpress-start.sh
 
-CMD ["/bin/bash", "/wordpress-start.sh"]
+CMD ["/bin/bash", "/root/container-scripts/prime-host/wordpress-start.sh"]
