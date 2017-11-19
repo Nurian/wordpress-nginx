@@ -21,15 +21,20 @@ cd /usr/share/nginx/ \
 # Move to correct folder and cleanup
 mv /usr/share/nginx/wordpress/* /usr/share/nginx/www/. \
     && chown -R $PRIMEHOST_USER:$PRIMEHOST_USER /usr/share/nginx/www \
-    && chmod -R 775 /usr/share/nginx/www \
     && rm -r /usr/share/nginx/wordpress \
     && rm latest.tar.gz
 fi
 
-# install wordpress cli
+# install wordpress cli and setup databse
 sudo -u $PRIMEHOST_USER bash << EOF
 cd /usr/share/nginx/www/
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+chmod +x wp-cli.phar
+sudo mv wp-cli.phar /usr/local/bin/wp
+wp config create --dbname=wordpress --dbuser=root --dbhost=${DOMAIN}-db --dbpass=$PRIMEHOST_PASSWORD
+sed -i -e '/table_prefix/a\
+$_SERVER[HTTPS] = on;' /usr/share/nginx/www/wp-config.php
+wp core install --url=${DOMAIN} --title=${DOMAIN} --admin_user=$PRIMEHOST_USER --admin_password=$PRIMEHOST_PASSWORD --admin_email=$P_MAIL
 EOF
 
 # start all the services
