@@ -38,10 +38,10 @@ mv /usr/share/nginx/www/wp-cli.phar /usr/local/bin/wp
 # setup db connection and create admin user
 sudo -u $PRIMEHOST_USER bash << EOF
 cd /usr/share/nginx/www/
-wp config create --dbname=wordpress --dbuser=root --dbhost=${DOMAIN}-db --dbpass=$PRIMEHOST_PASSWORD
+/usr/local/bin/wp config create --dbname=wordpress --dbuser=root --dbhost=${DOMAIN}-db --dbpass=$PRIMEHOST_PASSWORD
 sed -i -e '/table_prefix/a\
 $_SERVER[HTTPS] = on;' /usr/share/nginx/www/wp-config.php
-wp core install --url=${DOMAIN} --title=${DOMAIN} --admin_user=$PRIMEHOST_USER --admin_password=$PRIMEHOST_PASSWORD --admin_email=$P_MAIL
+/usr/local/bin/wp core install --url=${DOMAIN} --title=${DOMAIN} --admin_user=$PRIMEHOST_USER --admin_password=$PRIMEHOST_PASSWORD --admin_email=$P_MAIL
 EOF
 
 # start all the services
