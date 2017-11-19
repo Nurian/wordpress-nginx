@@ -33,7 +33,7 @@ chmod +x wp-cli.phar
 EOF
 
 # create wp shortcut for wp-cli 
-mv wp-cli.phar /usr/local/bin/wp
+mv /usr/share/nginx/www/wp-cli.phar /usr/local/bin/wp
 
 # setup db connection and create admin user
 sudo -u $PRIMEHOST_USER bash << EOF
