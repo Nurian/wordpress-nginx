@@ -40,7 +40,7 @@ sudo -u $PRIMEHOST_USER bash << EOF
 cd /usr/share/nginx/www/
 /usr/local/bin/wp config create --dbname=wordpress --dbuser=root --dbhost=${PRIMEHOST_DOMAIN}-db --dbpass=$PRIMEHOST_PASSWORD
 sed -i -e '/table_prefix/a\
-$_SERVER[HTTPS] = on;' /usr/share/nginx/www/wp-config.php
+\$_SERVER[HTTPS] = on;' /usr/share/nginx/www/wp-config.php
 /usr/local/bin/wp core install --url=${PRIMEHOST_DOMAIN} --title=${PRIMEHOST_DOMAIN} --admin_user=$PRIMEHOST_USER --admin_password=$PRIMEHOST_PASSWORD --admin_email=$LETSENCRYPT_EMAIL
 EOF
 
