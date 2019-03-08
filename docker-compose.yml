@@ -17,6 +17,9 @@ services:
      container_name: ${P_DOMAIN}-wordpress
      image: primehost/wordpress-nginx
      restart: always
+     ports:
+       - "80"
+       - "${P_PORT}:22"
      volumes:
        - /var/docker-data/container/${P_DOMAIN}/home:/home/
        - /var/docker-data/container/${P_DOMAIN}/www:/usr/share/nginx/www/
