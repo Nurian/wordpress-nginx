@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+   db:
+     container_name: ${P_DOMAIN}-db
+     image: mariadb:latest
+     restart: always
+     volumes:
+        - /var/docker-data/container/${P_DOMAIN}/mysql:/var/lib/mysql
+     environment:
+       MYSQL_ROOT_PASSWORD: ${P_PASSWORD}
+       MYSQL_DATABASE: wordpress
+
+   wordpress:
+     depends_on:
+       - db
+     container_name: ${P_DOMAIN}-wordpress
+     image: primehost/wordpress-nginx
+     restart: always
+     volumes:
+       - /var/docker-data/container/${P_DOMAIN}/home:/home/
+       - /var/docker-data/container/${P_DOMAIN}/www:/usr/share/nginx/www/
+     environment:
+       PRIMEHOST_USER: ${P_USER}
+       PRIMEHOST_PASSWORD: ${P_PASSWORD}
+       PRIMEHOST_DOMAIN: ${P_DOMAIN}
+       VIRTUAL_HOST: ${P_DOMAIN},${P_EXTRA_DOMAINS}
+       LETSENCRYPT_HOST: ${P_DOMAIN},${P_EXTRA_DOMAINS}
+       LETSENCRYPT_EMAIL: ${P_MAIL}
+
+networks:
+    default:
+       external:
+         name: webproxy

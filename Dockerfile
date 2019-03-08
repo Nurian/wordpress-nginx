@@ -1,4 +1,4 @@
-FROM primehost/nginx
+FROM primehost/nginx:php7.1
 MAINTAINER Kevin Nordloh <mail@legendary-server.de>
 
 # update before install
