@@ -9,9 +9,10 @@ useradd -m -d /home/$PRIMEHOST_USER -G root -s /bin/bash $PRIMEHOST_USER \
 echo "$PRIMEHOST_USER:$PRIMEHOST_PASSWORD" | chpasswd
 echo "root:$PRIMEHOST_PASSWORD" | chpasswd
 
-# Custom user for nginx and php
+# Custom user for nginx and php, disable access.log
 sed -i s/www-data/$PRIMEHOST_USER/g /etc/nginx/nginx.conf
-sed -i s/www-data/$PRIMEHOST_USER/g /etc/php/7.0/fpm/pool.d/www.conf
+sed -i s/www-data/$PRIMEHOST_USER/g /etc/php/*/fpm/pool.d/www.conf
+sed -i s:/var/log/nginx/access.log:off:g /etc/nginx/nginx.conf
 
 if [ ! -f /usr/share/nginx/www/wp-config.php ]; then
 # Download wordpress
