@@ -42,8 +42,22 @@ cd /usr/share/nginx/www/
 sleep 3
 /usr/local/bin/wp config create --dbname=wordpress --dbuser=root --dbhost=${PRIMEHOST_DOMAIN}-db --dbpass=$PRIMEHOST_PASSWORD
 /usr/local/bin/wp core install --url=https://${PRIMEHOST_DOMAIN} --title=${PRIMEHOST_DOMAIN} --admin_user=$PRIMEHOST_USER --admin_password=$PRIMEHOST_PASSWORD --admin_email=$LETSENCRYPT_EMAIL
+
+if grep -q "HTTPS" wp-config.php; then 
+echo "HTTPS already active"
+else
 sed -i -e '/table_prefix/a\
 \$_SERVER[HTTPS] = on;' /usr/share/nginx/www/wp-config.php
+fi
+
+export ZSH=$HOME/.oh-my-zsh
+wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true \
+ && cp $HOME/.oh-my-zsh/themes/bira.zsh-theme $HOME/.oh-my-zsh/themes/prime-host.zsh-theme \
+ && sed -i 's/%m%/%M%/g' $HOME/.oh-my-zsh/themes/prime-host.zsh-theme \
+ && sed -i s:$HOME/.oh-my-zsh:\$HOME/.oh-my-zsh:g $HOME/.zshrc \
+ && sed -i 's/robbyrussell/prime-host/g' $HOME/.zshrc \
+ && echo "DISABLE_UPDATE_PROMPT=true" >> $HOME/.zshrc
+
 EOF
 
 # start all the services
